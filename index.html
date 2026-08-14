@@ -2,203 +2,264 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#20352c">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#a4552b">
+<meta name="description" content="A pronunciation companion for the character names, places, and Romanian words in Wildwood Dancing.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <title>Wildwood Pronunciation</title>
 <style>
 :root{
-  color-scheme:light dark;
-  --bg:#f3f1ea;--card:#fffdf8;--ink:#1f2722;--muted:#69716c;
-  --line:#ddd8ce;--green:#20352c;--green2:#355447;--soft:#e7eee9;
-  --shadow:0 8px 26px rgba(31,39,34,.08)
+  color-scheme: light;
+  --bg:#f6f1e7; --surface:#fffdf8; --surface2:#f1eade;
+  --ink:#241f1a; --muted:#8a8074; --line:#e3dacb;
+  --accent:#a4552b; --accent:oklch(0.52 0.12 45);
+  --soft:#f3ece0; --soft:oklch(0.94 0.03 60);
+  --on-accent:#fff9f2;
+  --shadow:0 1px 2px rgba(60,40,20,.04), 0 12px 28px -18px rgba(60,40,20,.35);
 }
-@media(prefers-color-scheme:dark){
-  :root{--bg:#111713;--card:#18201b;--ink:#f4f2ec;--muted:#aab4ad;--line:#303b34;--green:#b8d1c3;--green2:#d3e3da;--soft:#25332b;--shadow:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#15130f; --surface:#1e1b16; --surface2:#26221b;
+    --ink:#f0eade; --muted:#9a9285; --line:#332e26;
+    --accent:#d9a15b; --accent:oklch(0.76 0.11 60);
+    --soft:#342a1d; --soft:oklch(0.32 0.05 55);
+    --on-accent:#1a1611;
+    --shadow:none;
+  }
 }
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#15130f; --surface:#1e1b16; --surface2:#26221b;
+  --ink:#f0eade; --muted:#9a9285; --line:#332e26;
+  --accent:#d9a15b; --accent:oklch(0.76 0.11 60);
+  --soft:#342a1d; --soft:oklch(0.32 0.05 55);
+  --on-accent:#1a1611;
+  --shadow:none;
+}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-.shell{max-width:760px;margin:auto;min-height:100vh}
-header{padding:calc(18px + env(safe-area-inset-top)) 16px 12px}
-.kicker{font-size:.7rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-h1{margin:4px 0 5px;font-size:1.7rem;line-height:1.05;letter-spacing:-.03em}
-.sub{color:var(--muted);font-size:.88rem;line-height:1.35;max-width:34rem}
-main{padding:0 10px calc(34px + env(safe-area-inset-bottom))}
-.hero{background:#20352c;color:#fff;border-radius:23px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
-.hero .label{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;opacity:.72}
-.hero h2{font-size:1.18rem;margin:6px 0 4px}
-.hero p{font-size:.82rem;opacity:.76;margin:0 0 13px}
-.quick{display:grid;grid-template-columns:1fr 54px;gap:9px}
-input,select,button{font:inherit}
-.quick input{border:0;border-radius:14px;padding:14px;background:#fff;color:#172019;font-size:1rem;outline:none;min-height:50px}
-.quick input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.25)}
-.play{border:0;border-radius:14px;background:#fff;color:#20352c;font-size:1.25rem;font-weight:900}
-.play.playing{transform:scale(.96);background:#e8efe9}
-.status{min-height:17px;font-size:.72rem;opacity:.7;margin-top:7px}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:14px;box-shadow:var(--shadow)}
-.paneltop{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px}
-.paneltitle{font-weight:850;font-size:1rem}
-.panelmeta{font-size:.73rem;color:var(--muted)}
-.searchrow{display:grid;grid-template-columns:1fr auto;gap:8px}
-.search{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--ink);padding:12px;outline:none}
-.search:focus{border-color:var(--green2);box-shadow:0 0 0 3px var(--soft)}
-.clear{border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--muted);font-weight:750;padding:0 13px}
-.filters{display:flex;gap:7px;overflow:auto;padding:10px 1px 2px;scrollbar-width:none}
-.filters::-webkit-scrollbar{display:none}
-.filter{white-space:nowrap;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);padding:8px 11px;font-size:.79rem;font-weight:800}
-.filter.active{background:var(--soft);color:var(--green);border-color:transparent}
-.voice{display:flex;gap:9px;align-items:center;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
-.voice label{font-size:.7rem;font-weight:800;color:var(--muted)}
-.voice select{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-size:.78rem}
-.section{margin-top:17px}
-.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:0 3px 7px}
-.sectionhead h3{margin:0;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.card{display:grid;grid-template-columns:1fr 48px;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 12px 13px 14px;margin:8px 0}
-.card:active{transform:scale(.995)}
-.termrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.term{font-size:1.07rem;font-weight:850;letter-spacing:-.01em}
-.tag{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--soft);padding:3px 7px;border-radius:999px}
-.phon{font-size:.84rem;font-weight:700;margin-top:3px}
-.detail{font-size:.73rem;line-height:1.35;color:var(--muted);margin-top:4px}
-.speak{width:48px;height:48px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--green);font-size:1.15rem}
-.speak.playing{background:var(--green);color:var(--card);transform:scale(.95)}
-.empty{text-align:center;padding:30px 10px;color:var(--muted)}
-.install{display:none;gap:8px;margin-top:12px}.install.show{display:flex}
-.install button{border:0;border-radius:12px;padding:10px 14px;font-weight:800;background:var(--soft);color:var(--ink)}
-.install .primary{background:var(--green);color:var(--card)}
-footer{text-align:center;color:var(--muted);font-size:.68rem;line-height:1.4;padding:18px 12px 0}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'Instrument Sans',system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+button,input{font-family:inherit}
+.serif{font-family:Spectral,Georgia,serif}
+
+.shell{max-width:520px;margin:0 auto;min-height:100vh;position:relative}
+
+/* header */
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:calc(18px + env(safe-area-inset-top)) 20px 14px}
+.brand-title{font-family:Spectral,Georgia,serif;font-size:19px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.brand-sub{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.topbar-actions{display:flex;gap:8px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.pill{height:44px;min-width:44px;padding:0 13px;border-radius:22px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);font-size:12px;font-weight:600;letter-spacing:.04em;
+  display:flex;align-items:center;gap:6px;cursor:pointer}
+.pill:active{transform:translateY(1px)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:block;flex:none}
+.iconbtn{height:44px;width:44px;border-radius:22px;border:1px solid var(--line);background:var(--surface);
+  color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.install-pill{border-color:var(--accent);color:var(--accent)}
+
+main{padding:0 0 calc(40px + env(safe-area-inset-bottom))}
+
+/* hero */
+.hero{margin:0 14px 0;padding:20px 18px 18px;border-radius:20px;background:var(--surface);
+  border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero h1{font-family:Spectral,Georgia,serif;font-size:26px;font-weight:500;line-height:1.15;
+  letter-spacing:-.01em;margin:0}
+.hero-sub{margin-top:5px;font-size:13px;color:var(--muted)}
+.hero-row{margin-top:16px;display:flex;align-items:stretch;gap:10px}
+.input-wrap{flex:1;min-width:0;position:relative;display:flex;align-items:center;border-radius:16px;
+  background:var(--surface2);border:1.5px solid var(--line)}
+.input-wrap input{flex:1;min-width:0;height:60px;padding:0 44px 0 16px;border:0;outline:none;
+  background:transparent;font-family:Spectral,Georgia,serif;font-size:21px;color:var(--ink)}
+.input-wrap input::placeholder{color:var(--muted);opacity:.7}
+.clear-x{position:absolute;right:8px;height:32px;width:32px;border-radius:16px;border:0;
+  background:transparent;color:var(--muted);font-size:17px;cursor:pointer;line-height:1}
+.speak-cta{position:relative;flex:none;width:68px;height:60px;border-radius:16px;border:0;
+  background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 8px 18px -8px rgba(120,60,25,.7)}
+.speak-cta:active{transform:translateY(1px)}
+.speaking-row{margin-top:12px;min-height:20px;display:flex;align-items:center;gap:8px}
+.speaking-row[hidden]{display:none}
+.pulse-dot{position:relative;width:8px;height:8px;display:block;flex:none}
+.pulse-dot span{position:absolute;inset:0;border-radius:50%;background:var(--accent)}
+.pulse-dot span.ring{animation:ww-pulse 1.1s ease-out infinite}
+.speaking-text{font-size:13px;color:var(--muted)}
+.speaking-text em{font-family:Spectral,Georgia,serif;font-style:italic;color:var(--ink);font-size:14px}
+@keyframes ww-pulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.7);opacity:0}100%{transform:scale(1.7);opacity:0}}
+@keyframes ww-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rise{animation:ww-rise .18s ease-out}
+
+/* recent */
+.section-head{margin:26px 20px 0;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.link-btn{border:0;background:transparent;padding:6px 0 6px 12px;font-size:12px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.recent-grid{margin:10px 14px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.recent-card{min-height:56px;padding:9px 12px;border-radius:14px;border:1px solid var(--line);
+  background:var(--surface);text-align:left;display:flex;flex-direction:column;justify-content:center;
+  gap:2px;cursor:pointer;overflow:hidden}
+.recent-card:active{transform:translateY(1px)}
+.recent-term{font-family:Spectral,Georgia,serif;font-size:17px;font-weight:500;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.recent-ph{font-size:11px;letter-spacing:.02em;color:var(--muted);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;display:block}
+.ghost-btn{width:calc(100% - 28px);margin:10px 14px 0;height:44px;border-radius:14px;
+  border:1px dashed var(--line);background:transparent;color:var(--muted);font-size:12.5px;
+  letter-spacing:.03em;cursor:pointer}
+.empty-hint{margin:10px 14px 0;padding:22px 16px;border-radius:14px;border:1px dashed var(--line);
+  text-align:center;font-size:13px;color:var(--muted);line-height:1.5}
+
+.divider{height:1px;background:var(--line);margin:28px 20px 0}
+
+/* guide */
+.guide-title{margin:22px 20px 0;font-family:Spectral,Georgia,serif;font-size:20px;font-weight:500}
+.search-wrap{margin:12px 14px 0;display:flex;align-items:center;height:50px;padding:0 14px;
+  border-radius:14px;background:var(--surface2);border:1px solid var(--line);gap:10px}
+.search-wrap svg{flex:none;opacity:.5;color:var(--ink)}
+.search-wrap input{flex:1;min-width:0;border:0;outline:none;background:transparent;font-size:15px;color:var(--ink)}
+.search-wrap input::placeholder{color:var(--muted);opacity:.75}
+
+.filters{margin:10px 14px 0;display:flex;gap:7px}
+.filter-chip{flex:1;height:40px;border-radius:20px;border:1px solid var(--line);font-size:12.5px;
+  font-weight:500;cursor:pointer;background:transparent;color:var(--muted)}
+.filter-chip.active{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+
+.results-list{margin:14px 14px 0;display:flex;flex-direction:column;gap:2px}
+.result-row{display:flex;align-items:flex-start;gap:12px;padding:14px 10px;border-bottom:1px solid var(--line);cursor:pointer}
+.result-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.result-headline{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.result-term{font-family:Spectral,Georgia,serif;font-size:19px;font-weight:500;color:var(--ink)}
+.result-cat{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.result-phrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.result-ph{font-size:14px;font-weight:500;color:var(--accent)}
+.result-ipa{font-family:Spectral,Georgia,serif;font-size:13px;color:var(--muted)}
+.result-desc{font-size:13px;line-height:1.45;color:var(--muted);text-wrap:pretty}
+.result-speak{flex:none;width:48px;height:48px;border-radius:24px;border:1px solid var(--line);
+  background:var(--surface);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.result-speak:active{transform:translateY(1px)}
+
+footer.note{text-align:center;color:var(--muted);font-size:.68rem;line-height:1.4;padding:22px 24px 0}
+
+/* voice sheet */
+.sheet-overlay{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;justify-content:flex-end}
+.sheet-overlay[hidden]{display:none}
+.sheet-backdrop{position:absolute;inset:0;background:rgba(30,22,14,.42)}
+.sheet{position:relative;max-width:520px;margin:0 auto;width:100%;background:var(--surface);
+  border-radius:22px 22px 0 0;padding:18px 18px calc(34px + env(safe-area-inset-bottom));max-height:82vh;overflow:auto}
+.sheet-handle{width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 16px}
+.sheet h3{font-family:Spectral,Georgia,serif;font-size:20px;font-weight:500;margin:0}
+.sheet-sub{margin-top:4px;font-size:12.5px;color:var(--muted)}
+.voice-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.voice-option{min-height:56px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--line);
+  background:var(--surface2);text-align:left;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;cursor:pointer;width:100%}
+.voice-option .vname{font-size:14.5px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.voice-option .vmeta{font-size:11.5px;color:var(--muted);display:block}
+.voice-option .vmark{font-size:15px;color:var(--accent);flex:none}
+.sheet-footnote{margin-top:12px;font-size:12px;line-height:1.5;color:var(--muted)}
+
+::-webkit-scrollbar{width:0}
 </style>
 </head>
 <body>
 <div class="shell">
-<header>
-  <div class="kicker">Reading companion</div>
-  <h1>Wildwood Pronunciation</h1>
-  <div class="sub">A quick pronunciation reference for names, places, and Romanian words in <em>Wildwood Dancing</em>.</div>
-  <div id="installBar" class="install">
-    <button id="installBtn" class="primary">Install app</button>
-    <button id="dismissInstall">Not now</button>
-  </div>
-</header>
 
-<main>
-<section class="hero">
-  <div class="label">Quick pronounce</div>
-  <h2>Type any Romanian word or phrase</h2>
-  <p>Uses the Romanian voice selected for this guide.</p>
-  <div class="quick">
-    <input id="freeformInput" lang="ro" type="text" placeholder="e.g. mulțumesc" autocomplete="off" autocapitalize="off" spellcheck="false">
-    <button id="freeformSpeak" class="play" aria-label="Pronounce typed Romanian">🔊</button>
-  </div>
-  <div id="freeformStatus" class="status">Press Enter or tap the speaker.</div>
-</section>
+  <header class="topbar">
+    <div>
+      <div class="brand-title">Wildwood</div>
+      <div class="brand-sub">Pronunciation companion</div>
+    </div>
+    <div class="topbar-actions">
+      <button type="button" id="installBtn" class="pill install-pill" hidden>Install</button>
+      <button type="button" id="voiceBtn" class="pill" aria-haspopup="dialog" aria-controls="voiceSheet">
+        <span class="dot"></span><span id="voiceBtnLabel">ro-RO</span>
+      </button>
+      <button type="button" id="themeBtn" class="iconbtn" aria-label="Toggle theme"><span id="themeGlyph">☀</span></button>
+    </div>
+  </header>
 
-<section class="panel">
-  <div class="paneltop">
-    <div><div class="paneltitle">Book guide</div><div class="panelmeta">Search the curated list</div></div>
-    <div class="panelmeta"><span id="count">42</span> entries</div>
-  </div>
-  <div class="searchrow">
-    <input id="search" class="search" type="search" placeholder="Search names, places, words…" autocomplete="off">
-    <button id="clear" class="clear">Clear</button>
-  </div>
-  <div class="filters">
-    <button class="filter active" data-cat="All">All</button>
-    <button class="filter" data-cat="Character">Characters</button>
-    <button class="filter" data-cat="Place">Places</button>
-    <button class="filter" data-cat="Vocabulary">Vocabulary</button>
-  </div>
-  <div class="voice">
-    <label for="voice">VOICE</label>
-    <select id="voice"><option>Loading Romanian voices…</option></select>
-  </div>
-</section>
+  <main>
+    <section class="hero">
+      <h1>Say it in Romanian</h1>
+      <div class="hero-sub">Type any word from the page. Press Enter to hear it.</div>
+      <div class="hero-row">
+        <div class="input-wrap">
+          <input id="freeformInput" lang="ro" type="text" placeholder="e.g. Piscul Dracului"
+            autocomplete="off" autocapitalize="off" spellcheck="false">
+          <button type="button" id="clearDraft" class="clear-x" aria-label="Clear" hidden>&times;</button>
+        </div>
+        <button type="button" id="speakBtn" class="speak-cta" aria-label="Pronounce">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 9.5h3.6L13 5v14l-5.4-4.5H4z" fill="currentColor"></path>
+            <path d="M16.6 8.6a4.8 4.8 0 0 1 0 6.8M19.3 5.9a8.6 8.6 0 0 1 0 12.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="speaking-row" id="speakingRow" hidden>
+        <span class="pulse-dot"><span></span><span class="ring"></span></span>
+        <span class="speaking-text">Speaking <em id="speakingTerm"></em></span>
+      </div>
+    </section>
 
-<section id="recentWrap" class="section" hidden>
-  <div class="sectionhead"><h3>Recently played</h3></div>
-  <div id="recent"></div>
-</section>
+    <section class="recent-section">
+      <div class="section-head">
+        <div class="eyebrow">Recently pronounced</div>
+        <button type="button" id="clearRecentsBtn" class="link-btn">Clear</button>
+      </div>
+      <div class="recent-grid" id="recentGrid"></div>
+      <button type="button" id="toggleRecentBtn" class="ghost-btn" hidden></button>
+      <div class="empty-hint" id="recentEmpty" hidden>Words you play will collect here.</div>
+    </section>
 
-<section class="section">
-  <div class="sectionhead"><h3>Pronunciation guide</h3></div>
-  <div id="list"></div>
-</section>
+    <div class="divider"></div>
 
-<footer>The interface works offline after installation. Speech uses the Romanian voice installed on your device.</footer>
-</main>
+    <section class="guide-section">
+      <h2 class="guide-title">The book&rsquo;s names, place by place</h2>
+      <div class="search-wrap">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"></circle>
+          <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+        <input id="searchInput" placeholder="Search names and words" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="filters" role="group" aria-label="Filter by category">
+        <button type="button" class="filter-chip active" data-filter="all">All</button>
+        <button type="button" class="filter-chip" data-filter="Character">Characters</button>
+        <button type="button" class="filter-chip" data-filter="Place">Places</button>
+        <button type="button" class="filter-chip" data-filter="Vocabulary">Words</button>
+      </div>
+      <div class="results-list" id="resultsList"></div>
+      <div class="empty-hint" id="noResults" hidden>Nothing in the guide matches that. Type it into the field at the top and hear it anyway.</div>
+    </section>
+
+    <footer class="note">The interface works offline after installation. Speech uses the Romanian voice installed on your device.</footer>
+  </main>
+
+  <div class="sheet-overlay" id="voiceSheetOverlay" hidden>
+    <div class="sheet-backdrop" id="voiceSheetBackdrop"></div>
+    <div class="sheet rise" id="voiceSheet" role="dialog" aria-modal="true" aria-labelledby="voiceSheetTitle">
+      <div class="sheet-handle"></div>
+      <h3 id="voiceSheetTitle">Romanian voice</h3>
+      <div class="sheet-sub">Used for everything you play. Remembered on this device.</div>
+      <div class="voice-list" id="voiceList"></div>
+      <div class="sheet-footnote" id="voiceFootnote"></div>
+    </div>
+  </div>
+
 </div>
 
-<script>
-const DATA = [{"term": "Jena", "speak": "Jena", "phonetic": "Jeh-nah (J like g in mirage)", "ipa": "/ˈʒe.na/", "desc": "The narrator and central character.", "cat": "Character"}, {"term": "Jenica", "speak": "Jenica", "phonetic": "Jeh-nee-kah (J like g in mirage)", "ipa": "/ʒeˈni.ka/", "desc": "A form of Jena’s name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Gogu", "speak": "Gogu", "phonetic": "Goh-goo", "ipa": "/ˈɡo.ɡu/", "desc": "Jena’s frog companion.", "cat": "Character"}, {"term": "Tati", "speak": "Tati", "phonetic": "Tah-tee", "ipa": "/ˈta.ti/", "desc": "Jena’s eldest sister; short for Tatiana.", "cat": "Character"}, {"term": "Tatiana", "speak": "Tatiana", "phonetic": "Tah-tee-ahr-nah", "ipa": "/ta.tiˈa.na/", "desc": "Jena’s eldest sister, usually called Tati.", "cat": "Character"}, {"term": "Paula", "speak": "Paula", "phonetic": "Pow-lah", "ipa": "/ˈpa.u.la/", "desc": "One of Jena’s sisters.", "cat": "Character"}, {"term": "Iulia", "speak": "Iulia", "phonetic": "Yoo-lee-ah", "ipa": "/ˈju.li.a/", "desc": "One of Jena’s sisters.", "cat": "Character"}, {"term": "Stela", "speak": "Stela", "phonetic": "Stel-ah", "ipa": "/ˈste.la/", "desc": "Jena’s youngest sister.", "cat": "Character"}, {"term": "Florica", "speak": "Florica", "phonetic": "Flo-ree-kah", "ipa": "/floˈri.ka/", "desc": "The housekeeper at Piscul Dracului.", "cat": "Character"}, {"term": "Petru", "speak": "Petru", "phonetic": "Peh-troo", "ipa": "/ˈpe.tru/", "desc": "Florica’s husband.", "cat": "Character"}, {"term": "Nicolae", "speak": "Nicolae", "phonetic": "Nee-koh-lie-eh (lie rhymes with sky)", "ipa": "/ni.koˈla.e/", "desc": "Jena’s uncle.", "cat": "Character"}, {"term": "Bogdana", "speak": "Bogdana", "phonetic": "Bohg-dah-nah", "ipa": "/boɡˈda.na/", "desc": "Jena’s aunt.", "cat": "Character"}, {"term": "Cezar", "speak": "Cezar", "phonetic": "Cheh-zahr", "ipa": "/ˈtʃe.zar/", "desc": "Jena’s cousin.", "cat": "Character"}, {"term": "Costi", "speak": "Costi", "phonetic": "Koh-tee", "ipa": "/ˈkos.ti/", "desc": "A character name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Costin", "speak": "Costin", "phonetic": "Kohs-teen", "ipa": "/kosˈtin/", "desc": "A character name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Gabriel", "speak": "Gabriel", "phonetic": "Gah-bree-EL", "ipa": "/ɡa.briˈel/", "desc": "Jena’s father’s secretary.", "cat": "Character"}, {"term": "Piscul Dracului", "speak": "Piscul Dracului", "phonetic": "Pis-kul Drah-koo-looy", "ipa": "/ˈpis.kul ˈdra.ku.luj/", "desc": "“Devil’s Peak,” Jena’s family home.", "cat": "Place"}, {"term": "Constanța", "speak": "Constanța", "phonetic": "Kahn-stahn-tsah", "ipa": "/konˈstan.t͡sa/", "desc": "A trading port on the Black Sea coast.", "cat": "Place"}, {"term": "Brașov", "speak": "Brașov", "phonetic": "Brah-shove", "ipa": "/braˈʃov/", "desc": "A merchant town in central Transylvania.", "cat": "Place"}, {"term": "Sibiu", "speak": "Sibiu", "phonetic": "See-bee-yoo", "ipa": "/siˈbi.u/", "desc": "A merchant town in central Transylvania.", "cat": "Place"}, {"term": "Vârful cu Negură", "speak": "Vârful cu Negură", "phonetic": "Vur-fool koo Neh-goo-ruh", "ipa": "/ˈvɨr.ful ku ˈne.ɡu.rə/", "desc": "“Storm Heights.”", "cat": "Place"}, {"term": "Tăul Ielelor", "speak": "Tăul Ielelor", "phonetic": "Tah-ool Yeh-leh-lor", "ipa": "/ˈtə.ul ˈje.le.lor/", "desc": "The Lake of the Iele.", "cat": "Place"}, {"term": "Tăul", "speak": "Tăul", "phonetic": "Tah-ool", "ipa": "/ˈtə.ul/", "desc": "Short form used for Tăul Ielelor.", "cat": "Place"}, {"term": "Drăguța", "speak": "Drăguța", "phonetic": "Druh-goo-tsah", "ipa": "/drəˈɡu.t͡sa/", "desc": "A mysterious figure associated with the Wildwood.", "cat": "Character"}, {"term": "Anastasia", "speak": "Anastasia", "phonetic": "Ah-nah-stah-see-yah", "ipa": "/a.na.staˈsi.a/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Anatolie", "speak": "Anatolie", "phonetic": "Ah-nah-toh-yee-ah", "ipa": "/a.na.toˈli.e/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Grigori", "speak": "Grigori", "phonetic": "Gree-gohr-ree", "ipa": "/ɡriˈɡo.ri/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Sten", "speak": "Sten", "phonetic": "Sten", "ipa": "/sten/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Ileana", "speak": "Ileana", "phonetic": "Eel-leh-ah-nah", "ipa": "/i.leˈa.na/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Marin", "speak": "Marin", "phonetic": "Mah-reen", "ipa": "/maˈrin/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Răzvan", "speak": "Răzvan", "phonetic": "Rahz-vahn", "ipa": "/rəzˈvan/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Salem bin Afazi", "speak": "Salem bin Afazi", "phonetic": "Sah-lem bin Ah-fah-zee", "ipa": "/ˈsa.lem bin aˈfa.zi/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Sandu", "speak": "Sandu", "phonetic": "Sahn-doo", "ipa": "/ˈsan.du/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Tadeusz", "speak": "Tadeuș", "phonetic": "Tah-deh-oosh (deh-oosh almost one syllable)", "ipa": "/ˈta.dɛ.uʂ/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Teodor", "speak": "Teodor", "phonetic": "The-oh-dor", "ipa": "/te.oˈdor/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Ildephonsus", "speak": "Ildefonsus", "phonetic": "Ill-deh-FON-sus", "ipa": "/ˌɪl.dəˈfɒn.səs/", "desc": "A character name appearing in the novel.", "cat": "Character"}, {"term": "Ciorbă", "speak": "Ciorbă", "phonetic": "chor-buh", "ipa": "/ˈtʃor.bə/", "desc": "Traditional Romanian broth or sour soup.", "cat": "Vocabulary"}, {"term": "mămăligă", "speak": "mămăligă", "phonetic": "muh-muh-lee-guh", "ipa": "/mə.məˈli.ɡə/", "desc": "A Romanian cornmeal porridge or cake, similar to polenta.", "cat": "Vocabulary"}, {"term": "Pomană", "speak": "Pomană", "phonetic": "poh-mah-nuh", "ipa": "/poˈma.nə/", "desc": "A memorial feast for the dead.", "cat": "Vocabulary"}, {"term": "Țuică", "speak": "Țuică", "phonetic": "tswee-kuh", "ipa": "/ˈt͡suj.kə/", "desc": "Romanian plum brandy.", "cat": "Vocabulary"}, {"term": "Țara Românească", "speak": "Țara Românească", "phonetic": "Tsah-rah Roh-muh-ne-eyes-kuh", "ipa": "/ˈt͡sa.ra ro.mɨˈne̯as.kə/", "desc": "The region south of Transylvania, also known as Wallachia.", "cat": "Place"}, {"term": "Voivode", "speak": "voievod", "phonetic": "voh-yeah-vode", "ipa": "/vo.jeˈvod/", "desc": "The ruler or head of a Transylvanian territory; a prince or princeling.", "cat": "Vocabulary"}];
-const freeformInput=document.getElementById('freeformInput');
-const freeformSpeak=document.getElementById('freeformSpeak');
-const freeformStatus=document.getElementById('freeformStatus');
-const searchEl=document.getElementById('search');
-const listEl=document.getElementById('list');
-const recentEl=document.getElementById('recent');
-const recentWrap=document.getElementById('recentWrap');
-const voiceEl=document.getElementById('voice');
-const countEl=document.getElementById('count');
-let activeCat='All', voices=[], selectedVoiceName=localStorage.getItem('wildwoodVoice')||'';
-let recent=JSON.parse(localStorage.getItem('wildwoodRecent')||'[]');
-
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function populateVoices(){
-  voices=speechSynthesis.getVoices();
-  const ro=voices.filter(v=>/^ro([-_]|$)/i.test(v.lang));
-  const use=ro.length?ro:voices;
-  voiceEl.innerHTML='';
-  use.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name} · ${v.lang}${v.default?' · default':''}`;voiceEl.appendChild(o)});
-  if(!use.length){const o=document.createElement('option');o.value='';o.textContent='System default';voiceEl.appendChild(o)}
-  const chosen=use.find(v=>v.name===selectedVoiceName)||use.find(v=>/^ro[-_]RO$/i.test(v.lang))||use[0];
-  if(chosen){selectedVoiceName=chosen.name;voiceEl.value=chosen.name}
-}
-populateVoices(); speechSynthesis.onvoiceschanged=populateVoices;
-voiceEl.addEventListener('change',()=>{selectedVoiceName=voiceEl.value;localStorage.setItem('wildwoodVoice',selectedVoiceName)});
-
-function cardHTML(x){
- return `<article class="card" data-term="${esc(x.term)}" tabindex="0">
- <div><div class="termrow"><span class="term">${esc(x.term)}</span><span class="tag">${esc(x.cat)}</span></div>
- <div class="phon">${esc(x.phonetic)}</div><div class="detail">${esc(x.ipa)} · ${esc(x.desc)}</div></div>
- <button class="speak" aria-label="Play pronunciation of ${esc(x.term)}">🔊</button></article>`
-}
-function matches(x){
- const q=searchEl.value.trim().toLocaleLowerCase();
- if(activeCat!=='All'&&x.cat!==activeCat)return false;
- return !q||[x.term,x.phonetic,x.desc,x.cat].join(' ').toLocaleLowerCase().includes(q)
-}
-function render(){
- const items=DATA.filter(matches); countEl.textContent=items.length;
- listEl.innerHTML=items.length?items.map(cardHTML).join(''):'<div class="empty">No matches found.</div>'; bind(listEl);
- const ri=recent.map(t=>DATA.find(x=>x.term===t)).filter(Boolean).slice(0,3);
- recentWrap.hidden=!ri.length; if(ri.length){recentEl.innerHTML=ri.map(cardHTML).join('');bind(recentEl)}
-}
-function speakText(txt,btn,status){
- const clean=String(txt||'').trim(); if(!clean){freeformInput.focus();return}
- speechSynthesis.cancel(); document.querySelectorAll('.playing').forEach(b=>b.classList.remove('playing'));
- const u=new SpeechSynthesisUtterance(clean), chosen=voices.find(v=>v.name===selectedVoiceName);
- if(chosen)u.voice=chosen; u.lang=chosen?.lang||'ro-RO';u.rate=.88;u.pitch=1;
- u.onstart=()=>{btn?.classList.add('playing');if(status)status.textContent=`Speaking “${clean}”`};
- u.onend=()=>{btn?.classList.remove('playing');if(status)status.textContent='Press Enter or tap the speaker.'};
- u.onerror=()=>{btn?.classList.remove('playing');if(status)status.textContent='Could not play speech. Check the Romanian voice setting.'};
- speechSynthesis.speak(u)
-}
-function speakItem(x,btn){speakText(x.speak,btn,null);recent=[x.term,...recent.filter(t=>t!==x.term)].slice(0,3);localStorage.setItem('wildwoodRecent',JSON.stringify(recent));setTimeout(render,50)}
-function bind(root){root.querySelectorAll('.card').forEach(card=>{const x=DATA.find(i=>i.term===card.dataset.term),b=card.querySelector('.speak');b.addEventListener('click',e=>{e.stopPropagation();speakItem(x,b)});card.addEventListener('click',()=>speakItem(x,b));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();speakItem(x,b)}})})}
-
-freeformSpeak.addEventListener('click',()=>speakText(freeformInput.value,freeformSpeak,freeformStatus));
-freeformInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();speakText(freeformInput.value,freeformSpeak,freeformStatus)}});
-searchEl.addEventListener('input',render);
-document.getElementById('clear').addEventListener('click',()=>{searchEl.value='';searchEl.focus();render()});
-document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeCat=b.dataset.cat;render()}));
-
-let deferredPrompt=null;const installBar=document.getElementById('installBar');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!localStorage.getItem('wildwoodInstallDismissed'))installBar.classList.add('show')});
-document.getElementById('installBtn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBar.classList.remove('show')});
-document.getElementById('dismissInstall').addEventListener('click',()=>{installBar.classList.remove('show');localStorage.setItem('wildwoodInstallDismissed','1')});
-window.addEventListener('appinstalled',()=>installBar.classList.remove('show'));
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
-render();
-</script>
-</body></html>
+<script src="./app.js"></script>
+</body>
+</html>
