@@ -1,323 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="Pronunciation companion for names, places, and Romanian terms in Wildwood Dancing.">
+<meta name="theme-color" content="#20352c">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<title>Wildwood Dancing Pronunciation Guide</title>
+<title>Wildwood Pronunciation</title>
 <style>
-:root {
-  color-scheme: light dark;
-  --bg:#f5f6f8; --card:#fff; --text:#17191d; --muted:#68707c;
-  --border:#dfe3e8; --accent:#4056a1; --chip:#eef1f7;
+:root{
+  color-scheme:light dark;
+  --bg:#f3f1ea;--card:#fffdf8;--ink:#1f2722;--muted:#69716c;
+  --line:#ddd8ce;--green:#20352c;--green2:#355447;--soft:#e7eee9;
+  --shadow:0 8px 26px rgba(31,39,34,.08)
 }
-@media (prefers-color-scheme: dark) {
-  :root { --bg:#101216; --card:#181b20; --text:#f1f3f5; --muted:#a4abb5; --border:#2c3138; --accent:#9db1ff; --chip:#242933; }
+@media(prefers-color-scheme:dark){
+  :root{--bg:#111713;--card:#18201b;--ink:#f4f2ec;--muted:#aab4ad;--line:#303b34;--green:#b8d1c3;--green2:#d3e3da;--soft:#25332b;--shadow:none}
 }
-* { box-sizing:border-box; }
-body {
-  margin:0; background:var(--bg); color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-header {
-  position:sticky; top:0; z-index:10; background:color-mix(in srgb,var(--bg) 92%,transparent);
-  backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
-  padding:calc(12px + env(safe-area-inset-top)) 14px 12px;
-}
-.wrap { max-width:760px; margin:auto; }
-h1 { font-size:1.25rem; margin:0 0 4px; }
-.subtitle { color:var(--muted); font-size:.86rem; margin-bottom:10px; }
-
-.freeform {
-  background:var(--card); border:1px solid var(--border); border-radius:16px;
-  padding:12px; margin:0 0 12px;
-}
-.freeform-label { font-size:.86rem; font-weight:700; margin-bottom:7px; }
-.freeform-row { display:grid; grid-template-columns:1fr auto; gap:8px; }
-.freeform-hint { color:var(--muted); font-size:.72rem; margin-top:6px; }
-.guide-label { color:var(--muted); font-size:.74rem; font-weight:700; margin:3px 2px 6px; text-transform:uppercase; letter-spacing:.05em; }
-@media (max-width:430px) {
-  .freeform-row { grid-template-columns:1fr; }
-  .freeform-row button { width:100%; }
-}
-
-.controls { display:grid; grid-template-columns:1fr auto; gap:8px; }
-input, select {
-  width:100%; border:1px solid var(--border); border-radius:12px; padding:11px 12px;
-  background:var(--card); color:var(--text); font-size:16px;
-}
-.voice-row { margin-top:8px; display:flex; gap:8px; align-items:center; }
-.voice-row label { color:var(--muted); font-size:.78rem; white-space:nowrap; }
-.voice-row select { padding:8px 10px; font-size:.85rem; }
-.filters { display:flex; gap:7px; overflow-x:auto; padding-top:9px; scrollbar-width:none; }
-.filters::-webkit-scrollbar { display:none; }
-button {
-  border:1px solid var(--border); background:var(--card); color:var(--text);
-  border-radius:12px; padding:10px 12px; font-size:15px; cursor:pointer;
-}
-button.active { background:var(--accent); color:white; border-color:var(--accent); }
-main { padding:12px 12px calc(30px + env(safe-area-inset-bottom)); }
-.section-title { font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:14px 4px 7px; }
-.card {
-  display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center;
-  background:var(--card); border:1px solid var(--border); border-radius:16px;
-  padding:13px 12px; margin:8px 0; box-shadow:0 1px 2px rgba(0,0,0,.03);
-}
-.card:active { transform:scale(.995); }
-.term { font-size:1.18rem; font-weight:700; }
-.phonetic { margin-top:2px; font-size:.91rem; font-weight:600; }
-.ipa { margin-top:1px; color:var(--muted); font-size:.78rem; }
-.desc { margin-top:5px; color:var(--muted); font-size:.82rem; line-height:1.3; }
-.badge {
-  display:inline-block; margin-top:6px; font-size:.65rem; padding:3px 7px;
-  background:var(--chip); border-radius:999px; color:var(--muted);
-}
-.speak {
-  width:48px; height:48px; padding:0; border-radius:50%; font-size:22px;
-  display:grid; place-items:center; flex:none;
-}
-.speak.playing { background:var(--accent); color:white; border-color:var(--accent); }
-.empty { text-align:center; color:var(--muted); padding:42px 12px; }
-.note { color:var(--muted); font-size:.75rem; line-height:1.35; margin:10px 4px 0; }
-.count { color:var(--muted); font-size:.75rem; margin-left:4px; }
-
-.install-bar{display:none;gap:8px;margin:0 0 10px}.install-bar.show{display:flex}.install-bar .primary{background:var(--accent);color:white;border-color:var(--accent);font-weight:700}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{max-width:760px;margin:auto;min-height:100vh}
+header{padding:calc(18px + env(safe-area-inset-top)) 16px 12px}
+.kicker{font-size:.7rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+h1{margin:4px 0 5px;font-size:1.7rem;line-height:1.05;letter-spacing:-.03em}
+.sub{color:var(--muted);font-size:.88rem;line-height:1.35;max-width:34rem}
+main{padding:0 10px calc(34px + env(safe-area-inset-bottom))}
+.hero{background:#20352c;color:#fff;border-radius:23px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.hero .label{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;opacity:.72}
+.hero h2{font-size:1.18rem;margin:6px 0 4px}
+.hero p{font-size:.82rem;opacity:.76;margin:0 0 13px}
+.quick{display:grid;grid-template-columns:1fr 54px;gap:9px}
+input,select,button{font:inherit}
+.quick input{border:0;border-radius:14px;padding:14px;background:#fff;color:#172019;font-size:1rem;outline:none;min-height:50px}
+.quick input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.play{border:0;border-radius:14px;background:#fff;color:#20352c;font-size:1.25rem;font-weight:900}
+.play.playing{transform:scale(.96);background:#e8efe9}
+.status{min-height:17px;font-size:.72rem;opacity:.7;margin-top:7px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:14px;box-shadow:var(--shadow)}
+.paneltop{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px}
+.paneltitle{font-weight:850;font-size:1rem}
+.panelmeta{font-size:.73rem;color:var(--muted)}
+.searchrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+.search{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--ink);padding:12px;outline:none}
+.search:focus{border-color:var(--green2);box-shadow:0 0 0 3px var(--soft)}
+.clear{border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--muted);font-weight:750;padding:0 13px}
+.filters{display:flex;gap:7px;overflow:auto;padding:10px 1px 2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter{white-space:nowrap;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);padding:8px 11px;font-size:.79rem;font-weight:800}
+.filter.active{background:var(--soft);color:var(--green);border-color:transparent}
+.voice{display:flex;gap:9px;align-items:center;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
+.voice label{font-size:.7rem;font-weight:800;color:var(--muted)}
+.voice select{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-size:.78rem}
+.section{margin-top:17px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:0 3px 7px}
+.sectionhead h3{margin:0;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card{display:grid;grid-template-columns:1fr 48px;gap:11px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 12px 13px 14px;margin:8px 0}
+.card:active{transform:scale(.995)}
+.termrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.term{font-size:1.07rem;font-weight:850;letter-spacing:-.01em}
+.tag{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--soft);padding:3px 7px;border-radius:999px}
+.phon{font-size:.84rem;font-weight:700;margin-top:3px}
+.detail{font-size:.73rem;line-height:1.35;color:var(--muted);margin-top:4px}
+.speak{width:48px;height:48px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--green);font-size:1.15rem}
+.speak.playing{background:var(--green);color:var(--card);transform:scale(.95)}
+.empty{text-align:center;padding:30px 10px;color:var(--muted)}
+.install{display:none;gap:8px;margin-top:12px}.install.show{display:flex}
+.install button{border:0;border-radius:12px;padding:10px 14px;font-weight:800;background:var(--soft);color:var(--ink)}
+.install .primary{background:var(--green);color:var(--card)}
+footer{text-align:center;color:var(--muted);font-size:.68rem;line-height:1.4;padding:18px 12px 0}
 </style>
 </head>
 <body>
+<div class="shell">
 <header>
-  <div class="wrap">
-    <h1>Wildwood Dancing Pronunciation Guide</h1>
-    <div class="subtitle">Tap a row or 🔊 to hear the name using your phone’s Romanian voice.</div>
-    <div id="installBar" class="install-bar"><button id="installBtn" class="primary">Install app</button><button id="dismissInstall">Not now</button></div>
-    <div class="freeform">
-      <div class="freeform-label">Pronounce any Romanian word or phrase</div>
-      <div class="freeform-row">
-        <input id="freeformInput" type="text" lang="ro" placeholder="Type Romanian here…" autocomplete="off" autocapitalize="off" spellcheck="false">
-        <button id="freeformSpeak" class="primary" type="button">🔊 Pronounce</button>
-      </div>
-      <div id="freeformStatus" class="freeform-hint">Uses the Romanian voice selected below. Press Enter to speak.</div>
-    </div>
-    <div class="guide-label">Search the Wildwood guide</div>
-    <div class="controls">
-      <input id="search" type="search" placeholder="Search names, places, words…" autocomplete="off" autocapitalize="off">
-      <button id="clear" aria-label="Clear search">Clear</button>
-    </div>
-    <div class="voice-row">
-      <label for="voice">Voice</label>
-      <select id="voice"><option>Loading voices…</option></select>
-    </div>
-    <div class="filters">
-      <button class="filter active" data-cat="All">All</button>
-      <button class="filter" data-cat="Character">Characters</button>
-      <button class="filter" data-cat="Place">Places</button>
-      <button class="filter" data-cat="Vocabulary">Vocabulary</button>
-    </div>
-    <div class="note">Works offline after the page is saved. It uses the speech voices installed on your Android device.</div>
+  <div class="kicker">Reading companion</div>
+  <h1>Wildwood Pronunciation</h1>
+  <div class="sub">A quick pronunciation reference for names, places, and Romanian words in <em>Wildwood Dancing</em>.</div>
+  <div id="installBar" class="install">
+    <button id="installBtn" class="primary">Install app</button>
+    <button id="dismissInstall">Not now</button>
   </div>
 </header>
+
 <main>
-  <div class="wrap">
-    <div id="recentWrap" hidden>
-      <div class="section-title">Recently played</div>
-      <div id="recent"></div>
-    </div>
-    <div class="section-title">Full guide <span class="count" id="count"></span></div>
-    <div id="list"></div>
+<section class="hero">
+  <div class="label">Quick pronounce</div>
+  <h2>Type any Romanian word or phrase</h2>
+  <p>Uses the Romanian voice selected for this guide.</p>
+  <div class="quick">
+    <input id="freeformInput" lang="ro" type="text" placeholder="e.g. mulțumesc" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button id="freeformSpeak" class="play" aria-label="Pronounce typed Romanian">🔊</button>
   </div>
+  <div id="freeformStatus" class="status">Press Enter or tap the speaker.</div>
+</section>
+
+<section class="panel">
+  <div class="paneltop">
+    <div><div class="paneltitle">Book guide</div><div class="panelmeta">Search the curated list</div></div>
+    <div class="panelmeta"><span id="count">42</span> entries</div>
+  </div>
+  <div class="searchrow">
+    <input id="search" class="search" type="search" placeholder="Search names, places, words…" autocomplete="off">
+    <button id="clear" class="clear">Clear</button>
+  </div>
+  <div class="filters">
+    <button class="filter active" data-cat="All">All</button>
+    <button class="filter" data-cat="Character">Characters</button>
+    <button class="filter" data-cat="Place">Places</button>
+    <button class="filter" data-cat="Vocabulary">Vocabulary</button>
+  </div>
+  <div class="voice">
+    <label for="voice">VOICE</label>
+    <select id="voice"><option>Loading Romanian voices…</option></select>
+  </div>
+</section>
+
+<section id="recentWrap" class="section" hidden>
+  <div class="sectionhead"><h3>Recently played</h3></div>
+  <div id="recent"></div>
+</section>
+
+<section class="section">
+  <div class="sectionhead"><h3>Pronunciation guide</h3></div>
+  <div id="list"></div>
+</section>
+
+<footer>The interface works offline after installation. Speech uses the Romanian voice installed on your device.</footer>
 </main>
+</div>
+
 <script>
 const DATA = [{"term": "Jena", "speak": "Jena", "phonetic": "Jeh-nah (J like g in mirage)", "ipa": "/ˈʒe.na/", "desc": "The narrator and central character.", "cat": "Character"}, {"term": "Jenica", "speak": "Jenica", "phonetic": "Jeh-nee-kah (J like g in mirage)", "ipa": "/ʒeˈni.ka/", "desc": "A form of Jena’s name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Gogu", "speak": "Gogu", "phonetic": "Goh-goo", "ipa": "/ˈɡo.ɡu/", "desc": "Jena’s frog companion.", "cat": "Character"}, {"term": "Tati", "speak": "Tati", "phonetic": "Tah-tee", "ipa": "/ˈta.ti/", "desc": "Jena’s eldest sister; short for Tatiana.", "cat": "Character"}, {"term": "Tatiana", "speak": "Tatiana", "phonetic": "Tah-tee-ahr-nah", "ipa": "/ta.tiˈa.na/", "desc": "Jena’s eldest sister, usually called Tati.", "cat": "Character"}, {"term": "Paula", "speak": "Paula", "phonetic": "Pow-lah", "ipa": "/ˈpa.u.la/", "desc": "One of Jena’s sisters.", "cat": "Character"}, {"term": "Iulia", "speak": "Iulia", "phonetic": "Yoo-lee-ah", "ipa": "/ˈju.li.a/", "desc": "One of Jena’s sisters.", "cat": "Character"}, {"term": "Stela", "speak": "Stela", "phonetic": "Stel-ah", "ipa": "/ˈste.la/", "desc": "Jena’s youngest sister.", "cat": "Character"}, {"term": "Florica", "speak": "Florica", "phonetic": "Flo-ree-kah", "ipa": "/floˈri.ka/", "desc": "The housekeeper at Piscul Dracului.", "cat": "Character"}, {"term": "Petru", "speak": "Petru", "phonetic": "Peh-troo", "ipa": "/ˈpe.tru/", "desc": "Florica’s husband.", "cat": "Character"}, {"term": "Nicolae", "speak": "Nicolae", "phonetic": "Nee-koh-lie-eh (lie rhymes with sky)", "ipa": "/ni.koˈla.e/", "desc": "Jena’s uncle.", "cat": "Character"}, {"term": "Bogdana", "speak": "Bogdana", "phonetic": "Bohg-dah-nah", "ipa": "/boɡˈda.na/", "desc": "Jena’s aunt.", "cat": "Character"}, {"term": "Cezar", "speak": "Cezar", "phonetic": "Cheh-zahr", "ipa": "/ˈtʃe.zar/", "desc": "Jena’s cousin.", "cat": "Character"}, {"term": "Costi", "speak": "Costi", "phonetic": "Koh-tee", "ipa": "/ˈkos.ti/", "desc": "A character name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Costin", "speak": "Costin", "phonetic": "Kohs-teen", "ipa": "/kosˈtin/", "desc": "A character name listed in the book’s pronunciation guide.", "cat": "Character"}, {"term": "Gabriel", "speak": "Gabriel", "phonetic": "Gah-bree-EL", "ipa": "/ɡa.briˈel/", "desc": "Jena’s father’s secretary.", "cat": "Character"}, {"term": "Piscul Dracului", "speak": "Piscul Dracului", "phonetic": "Pis-kul Drah-koo-looy", "ipa": "/ˈpis.kul ˈdra.ku.luj/", "desc": "“Devil’s Peak,” Jena’s family home.", "cat": "Place"}, {"term": "Constanța", "speak": "Constanța", "phonetic": "Kahn-stahn-tsah", "ipa": "/konˈstan.t͡sa/", "desc": "A trading port on the Black Sea coast.", "cat": "Place"}, {"term": "Brașov", "speak": "Brașov", "phonetic": "Brah-shove", "ipa": "/braˈʃov/", "desc": "A merchant town in central Transylvania.", "cat": "Place"}, {"term": "Sibiu", "speak": "Sibiu", "phonetic": "See-bee-yoo", "ipa": "/siˈbi.u/", "desc": "A merchant town in central Transylvania.", "cat": "Place"}, {"term": "Vârful cu Negură", "speak": "Vârful cu Negură", "phonetic": "Vur-fool koo Neh-goo-ruh", "ipa": "/ˈvɨr.ful ku ˈne.ɡu.rə/", "desc": "“Storm Heights.”", "cat": "Place"}, {"term": "Tăul Ielelor", "speak": "Tăul Ielelor", "phonetic": "Tah-ool Yeh-leh-lor", "ipa": "/ˈtə.ul ˈje.le.lor/", "desc": "The Lake of the Iele.", "cat": "Place"}, {"term": "Tăul", "speak": "Tăul", "phonetic": "Tah-ool", "ipa": "/ˈtə.ul/", "desc": "Short form used for Tăul Ielelor.", "cat": "Place"}, {"term": "Drăguța", "speak": "Drăguța", "phonetic": "Druh-goo-tsah", "ipa": "/drəˈɡu.t͡sa/", "desc": "A mysterious figure associated with the Wildwood.", "cat": "Character"}, {"term": "Anastasia", "speak": "Anastasia", "phonetic": "Ah-nah-stah-see-yah", "ipa": "/a.na.staˈsi.a/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Anatolie", "speak": "Anatolie", "phonetic": "Ah-nah-toh-yee-ah", "ipa": "/a.na.toˈli.e/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Grigori", "speak": "Grigori", "phonetic": "Gree-gohr-ree", "ipa": "/ɡriˈɡo.ri/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Sten", "speak": "Sten", "phonetic": "Sten", "ipa": "/sten/", "desc": "A friend from the Other Kingdom.", "cat": "Character"}, {"term": "Ileana", "speak": "Ileana", "phonetic": "Eel-leh-ah-nah", "ipa": "/i.leˈa.na/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Marin", "speak": "Marin", "phonetic": "Mah-reen", "ipa": "/maˈrin/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Răzvan", "speak": "Răzvan", "phonetic": "Rahz-vahn", "ipa": "/rəzˈvan/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Salem bin Afazi", "speak": "Salem bin Afazi", "phonetic": "Sah-lem bin Ah-fah-zee", "ipa": "/ˈsa.lem bin aˈfa.zi/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Sandu", "speak": "Sandu", "phonetic": "Sahn-doo", "ipa": "/ˈsan.du/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Tadeusz", "speak": "Tadeuș", "phonetic": "Tah-deh-oosh (deh-oosh almost one syllable)", "ipa": "/ˈta.dɛ.uʂ/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Teodor", "speak": "Teodor", "phonetic": "The-oh-dor", "ipa": "/te.oˈdor/", "desc": "A character name from the book’s pronunciation guide.", "cat": "Character"}, {"term": "Ildephonsus", "speak": "Ildefonsus", "phonetic": "Ill-deh-FON-sus", "ipa": "/ˌɪl.dəˈfɒn.səs/", "desc": "A character name appearing in the novel.", "cat": "Character"}, {"term": "Ciorbă", "speak": "Ciorbă", "phonetic": "chor-buh", "ipa": "/ˈtʃor.bə/", "desc": "Traditional Romanian broth or sour soup.", "cat": "Vocabulary"}, {"term": "mămăligă", "speak": "mămăligă", "phonetic": "muh-muh-lee-guh", "ipa": "/mə.məˈli.ɡə/", "desc": "A Romanian cornmeal porridge or cake, similar to polenta.", "cat": "Vocabulary"}, {"term": "Pomană", "speak": "Pomană", "phonetic": "poh-mah-nuh", "ipa": "/poˈma.nə/", "desc": "A memorial feast for the dead.", "cat": "Vocabulary"}, {"term": "Țuică", "speak": "Țuică", "phonetic": "tswee-kuh", "ipa": "/ˈt͡suj.kə/", "desc": "Romanian plum brandy.", "cat": "Vocabulary"}, {"term": "Țara Românească", "speak": "Țara Românească", "phonetic": "Tsah-rah Roh-muh-ne-eyes-kuh", "ipa": "/ˈt͡sa.ra ro.mɨˈne̯as.kə/", "desc": "The region south of Transylvania, also known as Wallachia.", "cat": "Place"}, {"term": "Voivode", "speak": "voievod", "phonetic": "voh-yeah-vode", "ipa": "/vo.jeˈvod/", "desc": "The ruler or head of a Transylvanian territory; a prince or princeling.", "cat": "Vocabulary"}];
-const freeformInput = document.getElementById('freeformInput');
-const freeformSpeak = document.getElementById('freeformSpeak');
-const freeformStatus = document.getElementById('freeformStatus');
-const searchEl = document.getElementById('search');
-const listEl = document.getElementById('list');
-const recentEl = document.getElementById('recent');
-const recentWrap = document.getElementById('recentWrap');
-const voiceEl = document.getElementById('voice');
-const countEl = document.getElementById('count');
-let activeCat = 'All';
-let voices = [];
-let selectedVoiceName = localStorage.getItem('wildwoodVoice') || '';
-let recent = JSON.parse(localStorage.getItem('wildwoodRecent') || '[]');
+const freeformInput=document.getElementById('freeformInput');
+const freeformSpeak=document.getElementById('freeformSpeak');
+const freeformStatus=document.getElementById('freeformStatus');
+const searchEl=document.getElementById('search');
+const listEl=document.getElementById('list');
+const recentEl=document.getElementById('recent');
+const recentWrap=document.getElementById('recentWrap');
+const voiceEl=document.getElementById('voice');
+const countEl=document.getElementById('count');
+let activeCat='All', voices=[], selectedVoiceName=localStorage.getItem('wildwoodVoice')||'';
+let recent=JSON.parse(localStorage.getItem('wildwoodRecent')||'[]');
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function populateVoices(){
+  voices=speechSynthesis.getVoices();
+  const ro=voices.filter(v=>/^ro([-_]|$)/i.test(v.lang));
+  const use=ro.length?ro:voices;
+  voiceEl.innerHTML='';
+  use.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name} · ${v.lang}${v.default?' · default':''}`;voiceEl.appendChild(o)});
+  if(!use.length){const o=document.createElement('option');o.value='';o.textContent='System default';voiceEl.appendChild(o)}
+  const chosen=use.find(v=>v.name===selectedVoiceName)||use.find(v=>/^ro[-_]RO$/i.test(v.lang))||use[0];
+  if(chosen){selectedVoiceName=chosen.name;voiceEl.value=chosen.name}
 }
+populateVoices(); speechSynthesis.onvoiceschanged=populateVoices;
+voiceEl.addEventListener('change',()=>{selectedVoiceName=voiceEl.value;localStorage.setItem('wildwoodVoice',selectedVoiceName)});
 
-function populateVoices() {
-  voices = speechSynthesis.getVoices();
-  const romanian = voices.filter(v => /^ro([-_]|$)/i.test(v.lang));
-  const preferred = romanian.length ? romanian : voices;
-  voiceEl.innerHTML = '';
-  preferred.forEach(v => {
-    const o = document.createElement('option');
-    o.value = v.name;
-    o.textContent = `${v.name} (${v.lang})${v.default ? ' — default' : ''}`;
-    voiceEl.appendChild(o);
-  });
-  if (!preferred.length) {
-    const o = document.createElement('option');
-    o.textContent = 'System default';
-    o.value = '';
-    voiceEl.appendChild(o);
-  }
-  let choice = preferred.find(v => v.name === selectedVoiceName)
-            || preferred.find(v => /^ro[-_]RO$/i.test(v.lang))
-            || preferred[0];
-  if (choice) {
-    voiceEl.value = choice.name;
-    selectedVoiceName = choice.name;
-  }
+function cardHTML(x){
+ return `<article class="card" data-term="${esc(x.term)}" tabindex="0">
+ <div><div class="termrow"><span class="term">${esc(x.term)}</span><span class="tag">${esc(x.cat)}</span></div>
+ <div class="phon">${esc(x.phonetic)}</div><div class="detail">${esc(x.ipa)} · ${esc(x.desc)}</div></div>
+ <button class="speak" aria-label="Play pronunciation of ${esc(x.term)}">🔊</button></article>`
 }
-populateVoices();
-speechSynthesis.onvoiceschanged = populateVoices;
-
-voiceEl.addEventListener('change', () => {
-  selectedVoiceName = voiceEl.value;
-  localStorage.setItem('wildwoodVoice', selectedVoiceName);
-});
-
-function cardHTML(item, recentMode=false) {
-  return `
-    <div class="card" data-term="${escapeHtml(item.term)}">
-      <div class="content">
-        <div class="term">${escapeHtml(item.term)}</div>
-        <div class="phonetic">${escapeHtml(item.phonetic)}</div>
-        <div class="ipa">${escapeHtml(item.ipa)}</div>
-        <div class="desc">${escapeHtml(item.desc)}</div>
-        <span class="badge">${escapeHtml(item.cat)}</span>
-      </div>
-      <button class="speak" aria-label="Play pronunciation of ${escapeHtml(item.term)}">🔊</button>
-    </div>`;
+function matches(x){
+ const q=searchEl.value.trim().toLocaleLowerCase();
+ if(activeCat!=='All'&&x.cat!==activeCat)return false;
+ return !q||[x.term,x.phonetic,x.desc,x.cat].join(' ').toLocaleLowerCase().includes(q)
 }
-
-function matches(item) {
-  const q = searchEl.value.trim().toLocaleLowerCase();
-  const catOK = activeCat === 'All' || item.cat === activeCat;
-  if (!catOK) return false;
-  if (!q) return true;
-  return [item.term,item.phonetic,item.desc,item.cat].join(' ').toLocaleLowerCase().includes(q);
+function render(){
+ const items=DATA.filter(matches); countEl.textContent=items.length;
+ listEl.innerHTML=items.length?items.map(cardHTML).join(''):'<div class="empty">No matches found.</div>'; bind(listEl);
+ const ri=recent.map(t=>DATA.find(x=>x.term===t)).filter(Boolean).slice(0,3);
+ recentWrap.hidden=!ri.length; if(ri.length){recentEl.innerHTML=ri.map(cardHTML).join('');bind(recentEl)}
 }
-
-function render() {
-  const items = DATA.filter(matches);
-  countEl.textContent = `(${items.length})`;
-  listEl.innerHTML = items.length ? items.map(x => cardHTML(x)).join('') : '<div class="empty">No matches.</div>';
-  bindCards(listEl);
-
-  const recentItems = recent.map(t => DATA.find(x => x.term === t)).filter(Boolean).slice(0,3);
-  if (recentItems.length) {
-    recentWrap.hidden = false;
-    recentEl.innerHTML = recentItems.map(x => cardHTML(x,true)).join('');
-    bindCards(recentEl);
-  } else {
-    recentWrap.hidden = true;
-  }
+function speakText(txt,btn,status){
+ const clean=String(txt||'').trim(); if(!clean){freeformInput.focus();return}
+ speechSynthesis.cancel(); document.querySelectorAll('.playing').forEach(b=>b.classList.remove('playing'));
+ const u=new SpeechSynthesisUtterance(clean), chosen=voices.find(v=>v.name===selectedVoiceName);
+ if(chosen)u.voice=chosen; u.lang=chosen?.lang||'ro-RO';u.rate=.88;u.pitch=1;
+ u.onstart=()=>{btn?.classList.add('playing');if(status)status.textContent=`Speaking “${clean}”`};
+ u.onend=()=>{btn?.classList.remove('playing');if(status)status.textContent='Press Enter or tap the speaker.'};
+ u.onerror=()=>{btn?.classList.remove('playing');if(status)status.textContent='Could not play speech. Check the Romanian voice setting.'};
+ speechSynthesis.speak(u)
 }
+function speakItem(x,btn){speakText(x.speak,btn,null);recent=[x.term,...recent.filter(t=>t!==x.term)].slice(0,3);localStorage.setItem('wildwoodRecent',JSON.stringify(recent));setTimeout(render,50)}
+function bind(root){root.querySelectorAll('.card').forEach(card=>{const x=DATA.find(i=>i.term===card.dataset.term),b=card.querySelector('.speak');b.addEventListener('click',e=>{e.stopPropagation();speakItem(x,b)});card.addEventListener('click',()=>speakItem(x,b));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();speakItem(x,b)}})})}
 
-function speakText(textToSpeak, btn, statusEl) {
-  const clean = String(textToSpeak || '').trim();
-  if (!clean) {
-    freeformInput?.focus();
-    return;
-  }
+freeformSpeak.addEventListener('click',()=>speakText(freeformInput.value,freeformSpeak,freeformStatus));
+freeformInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();speakText(freeformInput.value,freeformSpeak,freeformStatus)}});
+searchEl.addEventListener('input',render);
+document.getElementById('clear').addEventListener('click',()=>{searchEl.value='';searchEl.focus();render()});
+document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeCat=b.dataset.cat;render()}));
 
-  speechSynthesis.cancel();
-  document.querySelectorAll('.speak.playing').forEach(b => b.classList.remove('playing'));
-  freeformSpeak?.classList.remove('playing');
-
-  const u = new SpeechSynthesisUtterance(clean);
-  const chosen = voices.find(v => v.name === selectedVoiceName);
-  if (chosen) u.voice = chosen;
-  u.lang = chosen?.lang || 'ro-RO';
-  u.rate = 0.88;
-  u.pitch = 1.0;
-
-  u.onstart = () => {
-    btn?.classList.add('playing');
-    if (statusEl) statusEl.textContent = `Speaking: ${clean}`;
-  };
-  u.onend = () => {
-    btn?.classList.remove('playing');
-    if (statusEl) statusEl.textContent = 'Uses the Romanian voice selected below. Press Enter to speak.';
-  };
-  u.onerror = () => {
-    btn?.classList.remove('playing');
-    if (statusEl) statusEl.textContent = 'Unable to play speech. Check the selected Romanian voice.';
-  };
-
-  speechSynthesis.speak(u);
-}
-
-function speak(item, btn) {
-  speakText(item.speak, btn, null);
-
-  recent = [item.term, ...recent.filter(t => t !== item.term)].slice(0,3);
-  localStorage.setItem('wildwoodRecent', JSON.stringify(recent));
-  setTimeout(render, 50);
-}
-
-function bindCards(root) {
-  root.querySelectorAll('.card').forEach(card => {
-    const term = card.dataset.term;
-    const item = DATA.find(x => x.term === term);
-    const btn = card.querySelector('.speak');
-    btn.addEventListener('click', e => { e.stopPropagation(); speak(item, btn); });
-    card.addEventListener('click', () => speak(item, btn));
-  });
-}
-
-freeformSpeak.addEventListener('click', () => {
-  speakText(freeformInput.value, freeformSpeak, freeformStatus);
-});
-
-freeformInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    speakText(freeformInput.value, freeformSpeak, freeformStatus);
-  }
-});
-
-searchEl.addEventListener('input', render);
-document.getElementById('clear').addEventListener('click', () => {
-  searchEl.value=''; searchEl.focus(); render();
-});
-document.querySelectorAll('.filter').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.filter').forEach(x => x.classList.remove('active'));
-  b.classList.add('active'); activeCat = b.dataset.cat; render();
-}));
-
-// PWA installation prompt.
-let deferredPrompt = null;
-const installBar = document.getElementById('installBar');
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (!localStorage.getItem('wildwoodInstallDismissed')) installBar.classList.add('show');
-});
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  installBar.classList.remove('show');
-});
-document.getElementById('dismissInstall').addEventListener('click', () => {
-  installBar.classList.remove('show');
-  localStorage.setItem('wildwoodInstallDismissed','1');
-});
-window.addEventListener('appinstalled', () => installBar.classList.remove('show'));
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
-}
-
+let deferredPrompt=null;const installBar=document.getElementById('installBar');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!localStorage.getItem('wildwoodInstallDismissed'))installBar.classList.add('show')});
+document.getElementById('installBtn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBar.classList.remove('show')});
+document.getElementById('dismissInstall').addEventListener('click',()=>{installBar.classList.remove('show');localStorage.setItem('wildwoodInstallDismissed','1')});
+window.addEventListener('appinstalled',()=>installBar.classList.remove('show'));
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
 render();
 </script>
-</body>
-</html>
+</body></html>

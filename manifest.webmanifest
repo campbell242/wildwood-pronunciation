@@ -1,14 +1,14 @@
 {
-  "name": "Wildwood Dancing Pronunciation Guide",
-  "short_name": "Wildwood Pronunciation",
+  "name": "Wildwood Pronunciation",
+  "short_name": "Wildwood",
   "description": "A pronunciation companion for names, places, and Romanian terms in Wildwood Dancing.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#101216",
-  "theme_color": "#111827",
+  "background_color": "#f3f1ea",
+  "theme_color": "#20352c",
   "lang": "en",
   "categories": [
     "books",
