@@ -71,8 +71,12 @@
   const RECENTS_KEY = 'ww.recents.v1';
   const VOICE_KEY = 'ww.voiceKey.v1';
   const THEME_KEY = 'ww.theme.v1';
+  const SLOW_KEY = 'ww.slow.v1';
   const MAX_RECENTS = 20;
   const RECENTS_SHOWN = 8;
+  const NORMAL_RATE = 0.92;
+  const SLOW_RATE = 0.75;
+  const SLOW_WORD_PAUSE_MS = 320;
 
   // ---- Romanian diacritic-insensitive normalization ----
   // Explicit Romanian letter mapping (not just generic accent stripping):
@@ -128,6 +132,7 @@
     speaking: '',
     voicesOpen: false,
     theme: localStorage.getItem(THEME_KEY) || null, // 'light' | 'dark' | null(=system)
+    slow: localStorage.getItem(SLOW_KEY) === '1',
   };
 
   // ---- elements ----
@@ -140,6 +145,7 @@
 
     voiceBtn: document.getElementById('voiceBtn'),
     voiceBtnLabel: document.getElementById('voiceBtnLabel'),
+    slowBtn: document.getElementById('slowBtn'),
     themeBtn: document.getElementById('themeBtn'),
     themeGlyph: document.getElementById('themeGlyph'),
     installBtn: document.getElementById('installBtn'),
@@ -180,6 +186,17 @@
     applyTheme();
   });
 
+  // ---- slow / clearer pronunciation ----
+  function applySlowUI() {
+    el.slowBtn.classList.toggle('active', state.slow);
+    el.slowBtn.setAttribute('aria-pressed', String(state.slow));
+  }
+  el.slowBtn.addEventListener('click', function () {
+    state.slow = !state.slow;
+    save(SLOW_KEY, state.slow ? '1' : '0');
+    applySlowUI();
+  });
+
   // ---- voices ----
   function voiceKeyFor(v) { return v.name + '|' + v.lang; }
 
@@ -202,11 +219,41 @@
 
   // ---- speaking ----
   let speakTimeout = null;
+  let activeSequence = null; // { cancelled: boolean } — lets a new speak() cut off an in-progress word-by-word sequence
   function clearSpeakingIfMatches(text) {
     if (state.speaking === text) {
       state.speaking = '';
       el.speakingRow.hidden = true;
     }
+  }
+  function makeUtterance(text, rate) {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ro-RO';
+    u.rate = rate;
+    const v = getSelectedVoice();
+    if (v) { u.voice = v; u.lang = v.lang; }
+    return u;
+  }
+  // Speaks each word as its own utterance with a short pause between, so multi-word
+  // names (e.g. "Tăul Ielelor") are easier to pick apart at slow speed.
+  function speakWordSequence(words, rate, recentKeyText) {
+    const seq = { cancelled: false };
+    activeSequence = seq;
+    let i = 0;
+    function playNext() {
+      if (seq.cancelled) return;
+      if (i >= words.length) { clearSpeakingIfMatches(recentKeyText); return; }
+      const u = makeUtterance(words[i++], rate);
+      u.onend = u.onerror = function () {
+        if (seq.cancelled) return;
+        if (i >= words.length) { clearSpeakingIfMatches(recentKeyText); return; }
+        setTimeout(function () { if (!seq.cancelled) playNext(); }, SLOW_WORD_PAUSE_MS);
+      };
+      speechSynthesis.speak(u);
+    }
+    playNext();
+    // safety net in case a voice never fires onend/onerror
+    speakTimeout = setTimeout(function () { seq.cancelled = true; clearSpeakingIfMatches(recentKeyText); }, words.length * 3500 + 1500);
   }
   function speak(rawText) {
     const text = String(rawText || '').trim();
@@ -221,17 +268,22 @@
     el.speakingTerm.textContent = text;
 
     if (speakTimeout) clearTimeout(speakTimeout);
+    if (activeSequence) activeSequence.cancelled = true;
 
     if (!('speechSynthesis' in window)) {
       speakTimeout = setTimeout(function () { clearSpeakingIfMatches(text); }, 900);
       return;
     }
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(utterText);
-    u.lang = 'ro-RO';
-    u.rate = 0.92;
-    const v = getSelectedVoice();
-    if (v) { u.voice = v; u.lang = v.lang; }
+
+    const rate = state.slow ? SLOW_RATE : NORMAL_RATE;
+    const words = utterText.trim().split(/\s+/).filter(Boolean);
+
+    if (state.slow && words.length > 1) {
+      speakWordSequence(words, rate, text);
+      return;
+    }
+    const u = makeUtterance(utterText, rate);
     u.onend = u.onerror = function () { clearSpeakingIfMatches(text); };
     speechSynthesis.speak(u);
     speakTimeout = setTimeout(function () { clearSpeakingIfMatches(text); }, 4000);
@@ -423,6 +475,7 @@
 
   // ---- init ----
   applyTheme();
+  applySlowUI();
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
       if (state.theme === null) applyTheme();

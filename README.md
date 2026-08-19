@@ -20,6 +20,7 @@ This package uses only relative paths (`./`), so it also works when the site is 
 - **Say it in Romanian** — type any word or phrase and press Enter or tap the speaker button to hear it, using the Romanian voice installed on your device.
 - **Recently pronounced** — your last 20 pronunciations (curated or free-typed) are remembered on this device; the 8 most recent show on the main screen, with "See all" to expand and "Clear" to reset.
 - **The book's guide** — a curated list of ~60 character names, places, and Romanian words from the book, each with an easy phonetic spelling, IPA, and a short description. Search is diacritic-insensitive, so typing `tuica`, `razvan`, or `brasov` finds `Țuică`, `Răzvan`, and `Brașov`.
+- **Slower** toggle (top right) — plays every pronunciation at 75% speed. For phrases of two or more words (e.g. "Tăul Ielelor"), each word is also spoken separately with a short pause in between, making it easier to pick apart. The setting is remembered on this device and applies everywhere: the free-form field, the guide, and recent history.
 - The interface and curated guide are cached for offline use after the first successful load.
 - Pronunciations use the speech voices installed on the device; no prerecorded audio is bundled.
 - Voice preference, theme, and recently played terms are stored locally on the device — nothing is sent to a server.

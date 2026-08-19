@@ -60,7 +60,7 @@ button,input{font-family:inherit}
   padding:calc(18px + env(safe-area-inset-top)) 20px 14px}
 .brand-title{font-family:Spectral,Georgia,serif;font-size:19px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .brand-sub{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.topbar-actions{display:flex;gap:8px;flex:none;flex-wrap:wrap;justify-content:flex-end}
+.topbar-actions{display:flex;gap:8px;flex:1 1 auto;min-width:0;flex-wrap:wrap;justify-content:flex-end}
 .pill{height:44px;min-width:44px;padding:0 13px;border-radius:22px;border:1px solid var(--line);
   background:var(--surface);color:var(--ink);font-size:12px;font-weight:600;letter-spacing:.04em;
   display:flex;align-items:center;gap:6px;cursor:pointer}
@@ -69,6 +69,7 @@ button,input{font-family:inherit}
 .iconbtn{height:44px;width:44px;border-radius:22px;border:1px solid var(--line);background:var(--surface);
   color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .install-pill{border-color:var(--accent);color:var(--accent)}
+.pill-toggle.active{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 
 main{padding:0 0 calc(40px + env(safe-area-inset-bottom))}
 
@@ -186,6 +187,7 @@ footer.note{text-align:center;color:var(--muted);font-size:.68rem;line-height:1.
       <button type="button" id="voiceBtn" class="pill" aria-haspopup="dialog" aria-controls="voiceSheet">
         <span class="dot"></span><span id="voiceBtnLabel">ro-RO</span>
       </button>
+      <button type="button" id="slowBtn" class="pill pill-toggle" aria-pressed="false" aria-label="Slower, clearer pronunciation with pauses between words">Slower</button>
       <button type="button" id="themeBtn" class="iconbtn" aria-label="Toggle theme"><span id="themeGlyph">☀</span></button>
     </div>
   </header>
