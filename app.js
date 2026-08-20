@@ -74,8 +74,8 @@
   const SLOW_KEY = 'ww.slow.v1';
   const MAX_RECENTS = 20;
   const RECENTS_SHOWN = 8;
-  const NORMAL_RATE = 0.92;
-  const SLOW_RATE = 0.75;
+  const NORMAL_RATE = 1;
+  const SLOW_RATE = 0.6;
   const SLOW_WORD_PAUSE_MS = 320;
 
   // ---- Romanian diacritic-insensitive normalization ----
@@ -142,6 +142,7 @@
     speakBtn: document.getElementById('speakBtn'),
     speakingRow: document.getElementById('speakingRow'),
     speakingTerm: document.getElementById('speakingTerm'),
+    speakingRate: document.getElementById('speakingRate'),
 
     voiceBtn: document.getElementById('voiceBtn'),
     voiceBtnLabel: document.getElementById('voiceBtnLabel'),
@@ -275,6 +276,7 @@
     state.speaking = text;
     el.speakingRow.hidden = false;
     el.speakingTerm.textContent = text;
+    el.speakingRate.textContent = state.slow ? ' · ' + SLOW_RATE + '×' : '';
 
     if (speakTimeout) clearTimeout(speakTimeout);
     if (activeSequence) activeSequence.cancelled = true;
