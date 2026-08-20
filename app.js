@@ -205,10 +205,17 @@
     const all = speechSynthesis.getVoices() || [];
     if (!all.length) { state.voices = []; state.hasRo = false; renderVoiceUI(); return; }
     const ro = all.filter(function (v) { return /^ro([-_]|$)/i.test(v.lang || ''); });
-    state.voices = ro.length ? ro : all.slice(0, 6);
+    // On-device voices reliably honor rate/pitch changes; many network voices silently ignore
+    // them, so list local voices first and prefer one as the default pick.
+    const sorted = ro.length ? ro : all.slice(0, 6);
+    sorted.sort(function (a, b) { return (b.localService ? 1 : 0) - (a.localService ? 1 : 0); });
+    state.voices = sorted;
     state.hasRo = ro.length > 0;
     if (!state.voiceKey || !state.voices.some(function (v) { return voiceKeyFor(v) === state.voiceKey; })) {
-      const preferred = state.voices.find(function (v) { return /^ro[-_]ro$/i.test(v.lang || ''); }) || state.voices[0];
+      const roRoLocal = state.voices.find(function (v) { return /^ro[-_]ro$/i.test(v.lang || '') && v.localService; });
+      const roRoAny = state.voices.find(function (v) { return /^ro[-_]ro$/i.test(v.lang || ''); });
+      const anyLocal = state.voices.find(function (v) { return v.localService; });
+      const preferred = roRoLocal || roRoAny || anyLocal || state.voices[0];
       if (preferred) state.voiceKey = voiceKeyFor(preferred);
     }
     renderVoiceUI();
@@ -229,9 +236,11 @@
   function makeUtterance(text, rate) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ro-RO';
-    u.rate = rate;
     const v = getSelectedVoice();
     if (v) { u.voice = v; u.lang = v.lang; }
+    // Set rate last: assigning .voice after .rate has been seen to silently reset the
+    // rate back to default on some Chromium/Android builds.
+    u.rate = rate;
     return u;
   }
   // Speaks each word as its own utterance with a short pause between, so multi-word
@@ -363,11 +372,15 @@
     el.voiceSheetTitle.textContent = state.voices.length === 0
       ? 'No voices available'
       : (state.hasRo ? 'Romanian voice' : 'No Romanian voice found');
-    el.voiceFootnote.textContent = state.voices.length === 0
+    let footnote = state.voices.length === 0
       ? 'This browser isn’t exposing any text-to-speech voices. Playback may be silent until a voice is installed.'
       : (state.hasRo
           ? 'Romanian voices installed on this device.'
           : 'These are your device’s default voices, so Romanian words will be read with a foreign accent. Add a Romanian voice in your language settings for accurate pronunciation.');
+    if (sel && !sel.localService) {
+      footnote += ' This voice is a network voice — some network voices ignore the Slower speed control. Pick an “on device” voice below if you need Slower to take effect.';
+    }
+    el.voiceFootnote.textContent = footnote;
 
     el.voiceList.innerHTML = state.voices.map(function (v, i) {
       const key = voiceKeyFor(v);

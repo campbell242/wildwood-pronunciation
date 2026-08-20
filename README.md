@@ -22,7 +22,7 @@ This package uses only relative paths (`./`), so it also works when the site is 
 - **The book's guide** — a curated list of ~60 character names, places, and Romanian words from the book, each with an easy phonetic spelling, IPA, and a short description. Search is diacritic-insensitive, so typing `tuica`, `razvan`, or `brasov` finds `Țuică`, `Răzvan`, and `Brașov`.
 - **Slower** toggle (top right) — plays every pronunciation at 75% speed. For phrases of two or more words (e.g. "Tăul Ielelor"), each word is also spoken separately with a short pause in between, making it easier to pick apart. The setting is remembered on this device and applies everywhere: the free-form field, the guide, and recent history.
 - The interface and curated guide are cached for offline use after the first successful load.
-- Pronunciations use the speech voices installed on the device; no prerecorded audio is bundled.
+- Pronunciations use the speech voices installed on the device; no prerecorded audio is bundled. The voice picker prefers **on-device** voices and marks each voice "on device" or "network" — on-device voices reliably honor the Slower speed control, while some network/cloud voices ignore playback-rate changes entirely. If Slower doesn't seem to change the speed, open the voice picker and switch to an "on device" Romanian voice if one is listed.
 - Voice preference, theme, and recently played terms are stored locally on the device — nothing is sent to a server.
 
 ## Updating later
