@@ -42,7 +42,7 @@
     {t:'Ciorbă',ph:'chor-buh',ipa:'/ˈtʃor.bə/',cat:'Vocabulary',d:'Traditional Romanian broth or sour soup.'},
     {t:'Mămăligă',ph:'muh-muh-lee-guh',ipa:'/mə.məˈli.ɡə/',cat:'Vocabulary',d:'A Romanian cornmeal porridge or cake, similar to polenta.'},
     {t:'Pomană',ph:'poh-mah-nuh',ipa:'/poˈma.nə/',cat:'Vocabulary',d:'A memorial feast for the dead.'},
-    {t:'țuică',ph:'tswee-kuh',ipa:'/ˈt͡suj.kə/',cat:'Vocabulary',d:'Romanian plum brandy.'},
+    {t:'Țuică',ph:'tswee-kuh',ipa:'/ˈt͡suj.kə/',cat:'Vocabulary',d:'Romanian plum brandy.'},
     {t:'Țara Românească',ph:'Tsah-rah Roh-muh-ne-eyes-kuh',ipa:'/ˈt͡sa.ra ro.mɨˈne̯as.kə/',cat:'Place',d:'The region south of Transylvania, also known as Wallachia.'},
     {t:'Voivode',speak:'voievod',ph:'voh-yeah-vode',ipa:'/vo.jeˈvod/',cat:'Vocabulary',d:'The ruler or head of a Transylvanian territory; a prince or princeling.'},
     {t:'Transilvania',ph:'trahn-seel-VAH-nee-ah',ipa:'/tran.silˈva.ni.a/',cat:'Place',d:'The region the story is set in.'},
